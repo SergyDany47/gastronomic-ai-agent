@@ -18,18 +18,34 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Paso 2: Inicia sesión en Docker Hub usando los secrets
+      # --- NUEVOS PASOS ---
+      # Paso 2: Configurar Python para ejecutar el script ETL
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Paso 3: Instalar dependencias de Python desde requirements.txt
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      # Paso 4: Ejecutar el script ETL para crear el archivo restaurants.db
+      - name: Run ETL script to create database
+        run: python app/etl.py
+      # --- FIN DE NUEVOS PASOS ---
+
+      # Paso 5: Inicia sesión en Docker Hub usando los secrets
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Paso 3: Crear el archivo .env dinámicamente a partir del secret
+      # Paso 6: Crear el archivo .env dinámicamente a partir del secret
       - name: Create .env file
         run: echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" > .env
 
-      # Paso 4: Construye la imagen de Docker y la sube a Docker Hub
+      # Paso 7: Construye la imagen de Docker y la sube a Docker Hub
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
