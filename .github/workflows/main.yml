@@ -1,0 +1,36 @@
+# Nombre del workflow que aparecerá en la pestaña "Actions" de GitHub
+name: CI-CD Pipeline
+
+# Define el disparador (trigger) del workflow
+# En este caso, se ejecutará en cada 'push' a la rama 'main'
+on:
+  push:
+    branches: [ "main" ]
+
+# Define los trabajos (jobs) que se ejecutarán
+jobs:
+  # Nombre del único job que tenemos
+  build-and-push-docker-image:
+    # El tipo de máquina virtual en la que se ejecutará el job
+    runs-on: ubuntu-latest
+
+    # Los pasos que componen el job
+    steps:
+      # Paso 1: Clona el código del repositorio a la máquina virtual
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Paso 2: Inicia sesión en Docker Hub usando los secrets que creamos
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Paso 3: Construye la imagen de Docker y la sube a Docker Hub
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/gastronomic-ai-agent:latest
