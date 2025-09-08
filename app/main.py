@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from .models import QuestionRequest, AnswerResponse
 from .agent_logic import get_agent_response
 
@@ -7,6 +8,24 @@ app = FastAPI(
     title="Agente de Inteligencia Gastronómica",
     description="Una API para hacer preguntas en lenguaje natural sobre restaurantes de Madrid y Barcelona.",
     version="1.0.0"
+)
+
+# Configuración de CORS
+# Esto permite que nuestra interfaz de chatbot (que se ejecuta en un origen diferente)
+# se comunique con nuestra API.
+origins = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "null", # Permite abrir el archivo HTML directamente en el navegador
+]
+
+# Aquí es donde realmente aplicamos la configuración de CORS a nuestra aplicación.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"], # Permite todos los métodos (GET, POST, OPTIONS, etc.)
+    allow_headers=["*"], # Permite todas las cabeceras
 )
 
 @app.get("/", tags=["Status"])

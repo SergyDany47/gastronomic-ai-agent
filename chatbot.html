@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Agente Gastronómico de IA</title>
+    <style>
+        :root {
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-accent-color: #00a680; /* Tripadvisor Green */
+            --secondary-accent-color: #333;
+            --text-color: #e0e0e0;
+            --text-color-darker: #a0a0a0;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            /* Fondo con imagen y filtro oscuro para mejorar contraste */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('background-image.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            max-height: 850px;
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: var(--secondary-accent-color);
+            border-bottom: 1px solid #444;
+        }
+
+        header .logo {
+            height: 32px;
+            width: auto;
+            margin-right: 1rem;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        
+        main {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .info-panel {
+            width: 45%;
+            padding: 2rem;
+            border-right: 1px solid #444;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .card {
+            background-color: var(--secondary-accent-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--primary-accent-color);
+        }
+
+        .card p, .card li {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-color-darker);
+        }
+        
+        .card ul {
+            padding-left: 1.2rem;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .example-btn {
+            background-color: var(--secondary-accent-color);
+            border: 1px solid #555;
+            color: var(--text-color);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+            text-align: left;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .example-btn:hover {
+            background-color: var(--primary-accent-color);
+            border-color: var(--primary-accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 166, 128, 0.2);
+        }
+
+        #chat-container {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-window {
+            flex-grow: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .message { display: flex; margin-bottom: 1rem; max-width: 85%; }
+        .bubble { padding: 0.8rem 1.2rem; border-radius: 1.5rem; line-height: 1.5; }
+        .user { margin-left: auto; }
+        .user .bubble { background-color: var(--primary-accent-color); color: white; border-bottom-right-radius: 0.5rem; }
+        .agent { margin-right: auto; }
+        .agent .bubble { background-color: var(--secondary-accent-color); color: var(--text-color); border-bottom-left-radius: 0.5rem; }
+        .thinking .bubble { font-style: italic; color: #888; }
+
+        #input-area {
+            display: flex;
+            padding: 1.5rem;
+            border-top: 1px solid #444;
+        }
+        #user-input {
+            flex-grow: 1;
+            background-color: #444;
+            border: 1px solid #666;
+            border-radius: 2rem;
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+        #send-button {
+            margin-left: 1rem;
+            border: none;
+            background-color: var(--primary-accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color var(--transition-speed);
+        }
+        #send-button:hover { background-color: #008a69; }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-color-darker);
+            background-color: var(--secondary-accent-color);
+            border-top: 1px solid #444;
+        }
+
+        @media (max-width: 900px) {
+            body { padding: 0; height: auto; }
+            .container { height: auto; min-height: 100vh; border-radius: 0; }
+            main { flex-direction: column; }
+            .info-panel, #chat-container { width: 100%; border: none; }
+            .info-panel { border-bottom: 1px solid #444; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <img src="TripAdvisor_Logo.svg" alt="Logotipo de Tripadvisor" class="logo">
+        <h1>Agente Gastronómico</h1>
+    </header>
+    <main>
+        <div class="info-panel">
+            <div class="card description-card">
+                <h2>Sobre el Proyecto</h2>
+                <p>
+                    Este es un agente conversacional de IA que responde preguntas en lenguaje natural
+                    sobre más de 23,000 restaurantes en Madrid y Barcelona.
+                </p>
+                <ul>
+                    <li><strong>Tecnología Core:</strong> Traduce lenguaje natural a consultas SQL usando un Agente de LangChain y el LLM de Google.</li>
+                    <li><strong>Infraestructura:</strong> La lógica está expuesta a través de una API REST (FastAPI) y empaquetada en un contenedor de Docker.</li>
+                    <li><strong>Uso:</strong> Haz una pregunta en el chatbot o prueba uno de los ejemplos.</li>
+                </ul>
+            </div>
+            <div class="examples-grid">
+                <button class="example-btn">¿Cuál es la cocina mejor valorada en Barcelona?</button>
+                <button class="example-btn">Compara la valoración media del servicio entre Madrid y Barcelona.</button>
+                <button class="example-btn">Dame 3 restaurantes de Madrid con un precio 'Medio' y más de 100 reseñas.</button>
+                <button class="example-btn">Lista los 5 restaurantes con más reseñas de Madrid y su puntuación.</button>
+            </div>
+        </div>
+        <div id="chat-container">
+            <div id="chat-window">
+                <div class="message agent">
+                    <p class="bubble">¡Hola! Soy tu asistente de IA. ¿Qué te gustaría saber sobre los restaurantes de Madrid y Barcelona?</p>
+                </div>
+            </div>
+            <div id="input-area">
+                <input type="text" id="user-input" placeholder="Escribe tu pregunta aquí..." autofocus>
+                <button id="send-button">Enviar</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>Este es un proyecto personal con fines demostrativos. El logo de Tripadvisor se utiliza únicamente con fines ilustrativos y de contextualización del dataset.</p>
+    </footer>
+</div>
+
+<script>
+    const chatWindow = document.getElementById('chat-window');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+    const exampleButtons = document.querySelectorAll('.example-btn');
+
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}`;
+        const bubble = document.createElement('p');
+        bubble.className = 'bubble';
+        bubble.innerHTML = text; // Use innerHTML to allow for line breaks if needed
+        messageDiv.appendChild(bubble);
+        chatWindow.appendChild(messageDiv);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        return messageDiv;
+    }
+
+    async function submitQuestion(question) {
+        if (question.trim() === '') return;
+
+        addMessage(question, 'user');
+        const thinkingMessage = addMessage('Pensando...', 'agent thinking');
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: question }),
+            });
+
+            chatWindow.removeChild(thinkingMessage);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Ocurrió un error en la API.');
+            }
+
+            const data = await response.json();
+            addMessage(data.answer, 'agent');
+
+        } catch (error) {
+            console.error('Error:', error);
+            if(thinkingMessage.parentNode) {
+                chatWindow.removeChild(thinkingMessage);
+            }
+            addMessage(`Lo siento, hubo un error al contactar con la API. Asegúrate de que el contenedor de Docker esté en ejecución. <br><small>Error: ${error.message}</small>`, 'agent');
+        }
+    }
+
+    sendButton.addEventListener('click', () => {
+        const question = userInput.value;
+        userInput.value = '';
+        submitQuestion(question);
+    });
+
+    userInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            const question = userInput.value;
+            userInput.value = '';
+            submitQuestion(question);
+        }
+    });
+
+    exampleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const question = button.textContent;
+            userInput.focus();
+            submitQuestion(question);
+        });
+    });
+</script>
+
+</body>
+</html>
